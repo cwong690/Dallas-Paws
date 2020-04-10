@@ -1,222 +1,29 @@
 # Dogs or Cats? Why not both?
 
 Data is from 2 separate Dallas Animal Shelter records: one contains data from October 2018-September 2019 and the other from October 2019-March 2020.
+This analysis will simply look year 2019, taking all data within 2019 from both datasets into one.  
 
-This analysis will simply look year 2019, taking all data within 2019 from both datasets into one.
+Data Source: https://www.dallasopendata.com/City-Services/FY-2019-Dallas-Animal-Shelter-Data/kf5k-aswg
+             https://www.dallasopendata.com/City-Services/FY2020-Dallas-Animal-Shelter-Data/7h2m-3um5
+
+Dog lovers and cat lovers have been at war since the beginning of time (or whenever dogs and cats were discovered).
+I decided to find out if this is true using data from the Dallas Animal Shelter. I want to know if there really is a difference between the amount of cats adopted vs dogs.
+
 
 ## Hypothesis Testing  
 
-**Null Hypothesis**: There are no differences between the adoption percentage of cats and dogs.
+This is the question I am trying to answer:  
 
-**Alternative Hypothesis**: Cats are more likely to be adopted than dogs.
+**Null Hypothesis**: There are no differences between the adoption rate of cats and dogs.
+**Alternative Hypothesis**: There are differences between the adoption rate of cats and dogs.
 
+I will calculate the p-value and set the rejection threshold to be the standard: **0.05**
 
-## Load in data
+The amount of dogs the shelter takes in is significantly greater than the amount of cats they take in.
+After merging and cleaning up the datasets, I ended up with a dataset containing only the fields that will be important for finding the answer to my question.
+This includes: animal_type, intake_type, intake_datetime, outcome_type, outcome_datetime.
 
-
-```python
-import numpy as np
-import pandas as pd
-from datetime import datetime
-import matplotlib.pyplot as plt
-import seaborn as sns
-from scipy import stats
-
-pd.set_option('display.max_columns', 100)
-pd.set_option('display.max_rows', 50)
-
-plt.style.use('ggplot')
-
-%matplotlib inline
-
-# description of fields: https://www.dallasopendata.com/City-Services/Animals-Inventory/qgg6-h4bd
-# https://gis.dallascityhall.com/documents/StaticMaps/Council/2013_Council_PDFs/2013_CouncilDistrictAllA.pdf
-```
-
-
-```python
-fy_2020 = pd.read_csv('FY2020_Dallas_Animal_Shelter_Data.csv', low_memory=False)
-fy_2019 = pd.read_csv('FY_2019_Dallas_Animal_Shelter_Data.csv', low_memory=False)
-```
-
-_Check months to make sure it has all of 2019 months that are missing in the 2020 dataset._
-
-
-```python
-fy_2020['Month'].value_counts()
-```
-
-
-
-
-    OCT.2019    3998
-    JAN.2020    3658
-    NOV.2019    3526
-    DEC.2019    3363
-    FEB.2020    3127
-    MAR.2020    2575
-    Name: Month, dtype: int64
-
-
-
-
-```python
-fy_2019['Month'].value_counts()
-```
-
-
-
-
-    JUN.2019    4953
-    MAY.2019    4658
-    JUL.2019    4539
-    AUG.2019    4239
-    SEP.2019    3928
-    JAN.2019    3843
-    APR.2019    3759
-    MAR.2019    3681
-    DEC.2018    3523
-    OCT.2018    3219
-    FEB.2019    3093
-    NOV.2018    2974
-    Name: Month, dtype: int64
-
-
-
-
-```python
-print(fy_2020.shape)
-print(fy_2019.shape)
-```
-
-    (20247, 34)
-    (46409, 34)
-
-
-_Checking to make sure the column names match so they can be merged correctly._
-
-
-```python
-print('FY2020 Column Names: ', fy_2020.columns)
-print('FY2019 Column Names: ', fy_2019.columns)
-```
-
-    FY2020 Column Names:  Index(['Animal Id', 'Animal Type', 'Animal Breed', 'Kennel Number',
-           'Kennel Status', 'Tag Type', 'Activity Number', 'Activity Sequence',
-           'Source Id', 'Census Tract', 'Council District', 'Intake Type',
-           'Intake Subtype', 'Intake Total', 'Reason', 'Staff Id', 'Intake Date',
-           'Intake Time', 'Due Out', 'Intake Condition', 'Hold Request',
-           'Outcome Type', 'Outcome Subtype', 'Outcome Date', 'Outcome Time',
-           'Receipt Number', 'Impound Number', 'Service Request Number',
-           'Outcome Condition', 'Chip Status', 'Animal Origin',
-           'Additional Information', 'Month', 'Year'],
-          dtype='object')
-    FY2019 Column Names:  Index(['Animal_Id', 'Animal_Type', 'Animal_Breed', 'Kennel_Number',
-           'Kennel_Status', 'Tag_Type', 'Activity_Number', 'Activity_Sequence',
-           'Source_Id', 'Census_Tract', 'Council_District', 'Intake_Type',
-           'Intake_Subtype', 'Intake_Total', 'Reason', 'Staff_Id', 'Intake_Date',
-           'Intake_Time', 'Due_Out', 'Intake_Condition', 'Hold_Request',
-           'Outcome_Type', 'Outcome_Subtype', 'Outcome_Date', 'Outcome_Time',
-           'Receipt_Number', 'Impound_Number', 'Service_Request_Number',
-           'Outcome_Condition', 'Chip_Status', 'Animal_Origin',
-           'Additional_Information', 'Month', 'Year'],
-          dtype='object')
-
-
-_It looks like 2019 dataset columns have an underscore instead spaces. Let's change it all to the standard python snake case with underscore as spaces._
-
-
-```python
-fy_2020.columns = fy_2020.columns.str.strip().str.lower().str.replace(' ', '_')
-fy_2019.columns = fy_2019.columns.str.strip().str.lower()
-```
-
-## Time and Date
-
-_Checking the date and time columns to make sure the formats are similar because it will need to be combined later on._
-
-
-```python
-fy_2020[['intake_date', 'intake_time', 'outcome_date', 'outcome_time']].head()
-```
-
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>intake_date</th>
-      <th>intake_time</th>
-      <th>outcome_date</th>
-      <th>outcome_time</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>11/8/19</td>
-      <td>15:48:00</td>
-      <td>11/9/19</td>
-      <td>11:31:00</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>11/10/19</td>
-      <td>14:18:00</td>
-      <td>11/10/19</td>
-      <td>0:00:00</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>10/3/19</td>
-      <td>11:08:00</td>
-      <td>10/3/19</td>
-      <td>13:36:00</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>10/11/19</td>
-      <td>9:55:00</td>
-      <td>10/15/19</td>
-      <td>17:35:00</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>11/8/19</td>
-      <td>11:55:00</td>
-      <td>11/9/19</td>
-      <td>12:57:00</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
-
-_The 2020 date and time column looks good._
-
-
-```python
-fy_2019[['intake_date', 'intake_time', 'outcome_date', 'outcome_time']].head()
-```
-
-
+Ultimately, I will be looking at the adoptions of cats and dogs per month relative to how many cats and dogs they take in each month.
 
 
 <div>
@@ -346,9 +153,6 @@ print(fy_2020[['intake_datetime', 'outcome_datetime']].head(1))
 original_df = pd.concat([fy_2020, fy_2019], axis=0, join='outer')
 original_df.head()
 ```
-
-
-
 
 <div>
 <style scoped>
