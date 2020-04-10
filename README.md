@@ -41,19 +41,23 @@ A line plot is also plotted for additional visual.
 
 <img src="/img/lineplt_count_perc_monthly.png"/>
 
-Next, 
+Next, I explored the intake types of cats versus dogs. Again, I plotted the count but also the percentages to see how it differs proportionally. A majority of cats AND dogs seem have been strays when they were first taken in. The intake type of cats and dogs is pretty similar except that cats have a higher rate of being fostered than dogs.
 
 <img src="/img/count_intake_type.png"/>
 
+I was curious if there are certain months where the intake type is more common (let's say if people tend to foster cats more during the winter months). I plotted a category plot (catplot) using seaborn library. It does show a slight increase in fostering cats starting from the summer months until about November. There is also an increase of stray cats taken in during the summer months and the dogs have a high around the winter months. 
+
 <img src="/img/catplot_intake_type_monthly.png"/>
 
-Outcome
+Now, the outcome type. This is what I care more about because it shows whether the animal made it to adoption stage. I created a bar graph of the count and percentage of the outcome type of cats and dogs. A portion of both cats and dogs were transferred. From the original dataset, transfer is when they have to move them to another facility and this can be a number of reasons such as surgery.
 
 <img src="/img/count_outcome_type.png"/>
 
+A category plot was also created for the outcome type per month. 
+
 <img src="/img/catplot_outcome_type_monthly.png"/>
 
-adopt monthly
+Finally, I split up the datasets even more to grab only cats and dogs who had the adoption outcome in order to figure out the count and the percentage per month. 
 
 <img src="/img/lineplt_adpt_count_monthly.png"/>
 
