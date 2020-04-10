@@ -57,14 +57,26 @@ A category plot was also created for the outcome type per month.
 
 <img src="/img/catplot_outcome_type_monthly.png"/>
 
-Finally, I split up the datasets even more to grab only cats and dogs who had the adoption outcome in order to figure out the count and the percentage per month. 
-
-<img src="/img/lineplt_adpt_count_monthly.png"/>
-
-<img src="/img/lineplt_adpt_perc_monthly.png"/>
+Finally, I split up the datasets even more to grab only cats and dogs who had the adoption outcome in order to figure out the percentage per month. 
 
 <img src="/img/bar_perc_month_adopted.png"/>
 
-pval
+Running the hypothesis test, I gathered all the values of adopted cats and dogs per month.
+
+- Average cats adopted per month:  247.0
+- Average dogs adopted per month:  706.58
+
+- Standard deviation cats:  96.11
+- Standard deviation dogs:  70.07
+
+- Standard error cats:  27.74
+- Standard error dogs:  20.23
+
+I created a distribution plot using the average and the standard error of cats and dogs.
+Using the t-test frim scipy.stats, I was able to calculate a p-value.
+
+- P-value:  3.889099538391116e-11
+
+That is definitely smaller than the threshold I set of 0.05 and thus the null hypothesis can be rejected!
 
 <img src="/img/pval.png"/>
