@@ -25,7 +25,7 @@ This includes: animal_type, intake_type, intake_datetime, outcome_type, outcome_
 
 Ultimately, I will be looking at the adoptions of cats and dogs per month relative to how many cats and dogs they take in each month.
 
-<img src="Dallas-Paws/img/animal_type_count.png"/>
+<img src="/img/animal_type_count.png"/>
 
 
 
