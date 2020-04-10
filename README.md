@@ -1,7 +1,4 @@
-# Dallas-Paws
-
-
-# Dallas Animal Shelter 2019
+# Dogs or Cats? Why not both?
 
 Data is from 2 separate Dallas Animal Shelter records: one contains data from October 2018-September 2019 and the other from October 2019-March 2020.
 
