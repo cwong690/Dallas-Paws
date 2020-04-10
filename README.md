@@ -27,6 +27,28 @@ Ultimately, I will be looking at the adoptions of cats and dogs per month relati
 
 <img src="/img/animal_type_count.png"/>
 
+<img src="/img/count_intake_type.png"/>
+
+<img src="/img/catplot_intake_type_monthly.png"/>
+
+<img src="/img/count_perc_monthly.png"/>
+
+<img src="/img/lineplt_count_perc_monthly.png"/>
+
+<img src="/img/catplot_outcome_type_monthly.png"/>
+
+
+<img src="/img/count_outcome_type.png"/>
+
+
+<img src="/img/lineplt_adpt_count_monthly.png"/>
+
+<img src="/img/lineplt_adpt_perc_monthly.png"/>
+
+
+<img src="/img/bar_perc_month_adopted.png"/>
+
+<img src="/img/pval.png"/>
 
 
 _The time inside the date column is unnecessary and will only cause trouble later on. It will be stripped._
