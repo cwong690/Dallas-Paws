@@ -25,46 +25,42 @@ This includes: animal_type, intake_type, intake_datetime, outcome_type, outcome_
 
 Ultimately, I will be looking at the adoptions of cats and dogs per month relative to how many cats and dogs they take in each month.
 
+Animal Count:
+First I will examine how many total dogs and cats have been taken in by the shelter in 2019.
+
 <img src="/img/animal_type_count.png"/>
+
+From the bar graph, it is clear that there are definitely more dogs that are make it to the shelters.
+Next I got plotted the intake count and the percentage of cats and dogs per month to see if there are certain months that have a higher intake count.
+
+<img src="/img/count_perc_monthly.png"/>
+
+Looking at just the count is a bit tougher to distinguish the differences in cats and dogs because of the high volume of dogs. Therefore, I also plotted the percentages of the intake per month. Looking at the percentages, it is clearer that there seems to be a higher intake of cats during the summer months (May-September) and a higher intake of dogs during winter/spring months.
+
+A line plot is also plotted for additional visual.
+
+<img src="/img/lineplt_count_perc_monthly.png"/>
+
+Next, 
 
 <img src="/img/count_intake_type.png"/>
 
 <img src="/img/catplot_intake_type_monthly.png"/>
 
-<img src="/img/count_perc_monthly.png"/>
-
-<img src="/img/lineplt_count_perc_monthly.png"/>
-
-<img src="/img/catplot_outcome_type_monthly.png"/>
-
+Outcome
 
 <img src="/img/count_outcome_type.png"/>
 
+<img src="/img/catplot_outcome_type_monthly.png"/>
+
+adopt monthly
 
 <img src="/img/lineplt_adpt_count_monthly.png"/>
 
 <img src="/img/lineplt_adpt_perc_monthly.png"/>
 
-
 <img src="/img/bar_perc_month_adopted.png"/>
 
+pval
+
 <img src="/img/pval.png"/>
-
-
-_The time inside the date column is unnecessary and will only cause trouble later on. It will be stripped._
-
-_In order to exact information such as day, month, and so on, the datetime columns need to be converted to DateTime objects._
-
-
-
-_Looked at value counts of many columns to determine which ones are necessary._
-_Every column seems to have minimal amounts of missing values except for the 'reason' column. We will check the values within that column and see if it is important._
-
-
-_Most of the reasons are similar but different and very specific. It will not be too useful for this hypothesis since we are looking at simply the intake condition and the general intake type. Checking out the value counts, they are also mainly in the 'other' category will small amounts in the other categories. We can safely drop the 'reason' column entirely._
-
-_The rest of the columns do not contain a huge amount of missing values that would affect the testing. Therefore, we will drop all rows with null values._
-
-
-_The council district is a bit messy. It has multiple datatypes but are basically the same number. The numbers will have to be changed to integer type and drop the random string value.  
-Also, looking at the Dallas district map, there are no districts 0 or 21. Those rows will also be dropped._
